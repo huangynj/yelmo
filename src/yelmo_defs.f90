@@ -118,6 +118,7 @@ module yelmo_defs
         real(prec), allocatable :: dHicedy(:,:)    ! Ice thickness gradient slope [m m-1], Ac y nodes
         
         real(prec), allocatable :: H_grnd(:,:)       ! Ice thickness overburden [m]
+        real(prec), allocatable :: H_sl(:,:)         ! Ice thickness that contributes to sea-level change [m]
         
         ! Masks 
         real(prec), allocatable :: f_grnd(:,:)       ! Grounded fraction (grounding line fraction between 0 and 1)
@@ -532,7 +533,7 @@ module yelmo_defs
         real(prec) :: uxy_bar, uxy_s, uxy_b, z_bed, smb, T_srf, bmb
 
         ! ===== Grounded ice variables =====
-        real(prec) :: H_ice_g, z_srf_g, V_ice_g, A_ice_g, uxy_bar_g, uxy_s_g, uxy_b_g
+        real(prec) :: H_ice_g, z_srf_g, V_ice_g, V_sl, A_ice_g, uxy_bar_g, uxy_s_g, uxy_b_g
         real(prec) :: f_pmp, H_w, bmb_g 
 
         ! ===== Floating ice variables =====

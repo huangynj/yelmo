@@ -135,6 +135,8 @@ contains
             reg%z_srf_g      = sum(tpo%now%z_srf,mask=mask_grnd)/npts_grnd     ! [m]
             
             reg%V_ice_g      = sum(tpo%now%H_ice,mask=mask_grnd)*tpo%par%dx*tpo%par%dy*m3_km3             ! [km^3]
+            ! jablasco
+            reg%V_sl         = sum(tpo%now%H_sl,mask=mask_grnd)*tpo%par%dx*tpo%par%dy*m3_km3             ! [km^3]
             reg%A_ice_g      = count(tpo%now%H_ice .gt. 0.0 .and. mask_grnd)*tpo%par%dx*tpo%par%dy*m2_km2 ! [km^2]
             
             ! ydyn variables 
@@ -155,7 +157,9 @@ contains
             reg%H_ice_g      = 0.0_prec 
             reg%z_srf_g      = 0.0_prec 
 
-            reg%V_ice_g      = 0.0_prec 
+            reg%V_ice_g      = 0.0_prec
+            ! jablasco
+            reg%V_sl         = 0.0_prec 
             reg%A_ice_g      = 0.0_prec 
 
             ! ydyn variables 
@@ -308,6 +312,8 @@ contains
         call nc_write(filename,"z_srf_g",reg%z_srf_g,units="m",long_name="Mean surface elevation (grounded)", &
                       dim1="time",start=[n],ncid=ncid)
         call nc_write(filename,"V_ice_g",reg%V_ice_g*1e-6,units="1e6 km^3",long_name="Ice volume (grounded)", &
+                      dim1="time",start=[n],ncid=ncid)
+        call nc_write(filename,"V_sl",reg%V_sl*1e-6,units="1e6 km^3",long_name="Sea-level ice volume", &
                       dim1="time",start=[n],ncid=ncid)
         call nc_write(filename,"A_ice_g",reg%A_ice_g*1e-6,units="1e6 km^2",long_name="Ice area (grounded)", &
                       dim1="time",start=[n],ncid=ncid)

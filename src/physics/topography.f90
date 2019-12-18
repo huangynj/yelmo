@@ -10,6 +10,7 @@ module topography
     public :: calc_z_srf_max
     public :: calc_z_srf_subgrid_area
     public :: calc_H_grnd
+    public :: calc_H_sl
     public :: calc_f_grnd_subgrid_area
     public :: calc_f_grnd_subgrid_linear
     public :: filter_f_grnd
@@ -206,7 +207,7 @@ contains
         real(prec), intent(INOUT) :: H_grnd
         real(prec), intent(IN)    :: H_ice
         real(prec), intent(IN)    :: z_bed
-        real(prec), intent(IN)    :: z_sl 
+        real(prec), intent(IN)    :: z_sl
 
         ! Local variables   
         real(prec) :: rho_sw_ice 
@@ -219,6 +220,39 @@ contains
         return 
 
     end subroutine calc_H_grnd
+
+    ! jablasco
+    elemental subroutine calc_H_sl(H_sl,H_grnd,H_ice,z_bed,z_sl)
+        ! Calculate ice that directly contributes to sea-level
+
+        implicit none
+
+        real(prec), intent(INOUT) :: H_sl
+        real(prec), intent(IN)    :: H_grnd
+        real(prec), intent(IN)    :: H_ice
+        real(prec), intent(IN)    :: z_bed
+        real(prec), intent(IN)    :: z_sl
+
+        ! Local variables   
+        real(prec) :: rho_sw_ice
+
+        rho_sw_ice = rho_sw/rho_ice ! Ratio of density of seawater to ice [--]
+
+        ! Calculate new H_grnd (ice thickness overburden)
+        if (H_grnd .lt. 0.0) then
+            H_sl = 0.0
+        else
+            if (z_sl .lt. z_bed) then
+                H_sl = H_ice
+            else
+                H_sl = H_ice - rho_sw_ice*(z_sl-z_bed)
+            end if
+        end if     
+
+        return
+
+    end subroutine calc_H_sl
+
 
     subroutine calc_f_grnd_subgrid_area(f_grnd,f_grnd_acx,f_grnd_acy,H_grnd,gl_sep_nx)
         ! Use H_grnd to determined grounded area fraction of grid point.

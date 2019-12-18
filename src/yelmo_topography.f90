@@ -175,6 +175,8 @@ contains
 
         ! Calculate grounding overburden ice thickness 
         call calc_H_grnd(tpo%now%H_grnd,tpo%now%H_ice,bnd%z_bed,bnd%z_sl)
+        ! jablasco
+        call calc_H_sl(tpo%now%H_sl,tpo%now%H_grnd,tpo%now%H_ice,bnd%z_bed,bnd%z_sl)
 
 
         ! Calculate the grounded fraction and grounding line mask of each grid cell
@@ -421,6 +423,7 @@ contains
         allocate(now%dHicedy(nx,ny))
         
         allocate(now%H_grnd(nx,ny))
+        allocate(now%H_sl(nx,ny))
 
         ! Masks 
         allocate(now%f_grnd(nx,ny))
@@ -448,7 +451,8 @@ contains
         now%dzsdy      = 0.0 
         now%dHicedx    = 0.0 
         now%dHicedy    = 0.0
-        now%H_grnd     = 0.0  
+        now%H_grnd     = 0.0
+        now%H_sl       = 0.0
         now%f_grnd     = 0.0  
         now%f_grnd_acx = 0.0  
         now%f_grnd_acy = 0.0  
@@ -486,6 +490,7 @@ contains
         if (allocated(now%dHicedy))    deallocate(now%dHicedy)
         
         if (allocated(now%H_grnd))     deallocate(now%H_grnd)
+        if (allocated(now%H_sl))       deallocate(now%H_sl)
 
         ! Masks
         if (allocated(now%f_grnd))     deallocate(now%f_grnd)
