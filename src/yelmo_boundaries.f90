@@ -118,9 +118,19 @@ contains
 
         nx = size(bnd%ice_allowed,1)
         ny = size(bnd%ice_allowed,2)
+        ! jablasco
+        nx = size(bnd%ice_wais,1)
+        ny = size(bnd%ice_wais,2)
+        nx = size(bnd%ice_eais,1)
+        ny = size(bnd%ice_eais,2)
+        nx = size(bnd%ice_apis,1)
+        ny = size(bnd%ice_apis,2)
 
         ! Initially set ice_allowed to true everywhere 
-        bnd%ice_allowed = .TRUE. 
+        bnd%ice_allowed = .TRUE.
+        bnd%ice_wais    = .TRUE.
+        bnd%ice_apis    = .TRUE.
+        bnd%ice_eais    = .TRUE. 
 
         ! Also set calv_mask true everywhere (no imposed calving front)
         bnd%calv_mask   = .TRUE. 
@@ -160,7 +170,12 @@ contains
                 bnd%ice_allowed(1,:)  = .FALSE. 
                 bnd%ice_allowed(nx,:) = .FALSE. 
                 bnd%ice_allowed(:,1)  = .FALSE. 
-                bnd%ice_allowed(:,ny) = .FALSE. 
+                bnd%ice_allowed(:,ny) = .FALSE.
+
+                ! jablasco
+                where (bnd%regions .ne. 3.0) bnd%ice_apis = .FALSE.
+                where (bnd%regions .ne. 4.0) bnd%ice_wais = .FALSE.
+                where (bnd%regions .ne. 5.0) bnd%ice_eais = .FALSE. 
 
             
             case ("EISMINT")
@@ -260,6 +275,9 @@ contains
         allocate(now%region_mask(nx,ny))
         
         allocate(now%ice_allowed(nx,ny))
+        allocate(now%ice_wais(nx,ny))
+        allocate(now%ice_eais(nx,ny))
+        allocate(now%ice_apis(nx,ny))
         allocate(now%calv_mask(nx,ny))
         
         allocate(now%H_ice_ref(nx,ny))
@@ -284,6 +302,9 @@ contains
         now%region_mask = 0.0_prec 
         
         now%ice_allowed = .TRUE.  ! By default allow ice everywhere 
+        now%ice_wais    = .TRUE.
+        now%ice_eais    = .TRUE.
+        now%ice_apis = .TRUE.
         now%calv_mask   = .TRUE.  ! By default now 
 
         now%H_ice_ref   = 0.0_prec 
@@ -316,6 +337,9 @@ contains
         if (allocated(now%region_mask)) deallocate(now%region_mask)
         
         if (allocated(now%ice_allowed)) deallocate(now%ice_allowed)
+        if (allocated(now%ice_wais)) deallocate(now%ice_wais)
+        if (allocated(now%ice_eais)) deallocate(now%ice_eais)
+        if (allocated(now%ice_apis)) deallocate(now%ice_apis)
         if (allocated(now%calv_mask))   deallocate(now%calv_mask)
         
         if (allocated(now%H_ice_ref))   deallocate(now%H_ice_ref)

@@ -8,6 +8,6 @@ module yelmo
 
 !     use yelmo_topography
 !     use yelmo_boundaries 
-    use yelmo_regions, only : write_yreg_init, write_yreg_step 
+    use yelmo_regions, only : write_yreg_init, write_yreg_step, calc_write_yreg_step 
     
 end module yelmo 

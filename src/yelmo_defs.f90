@@ -464,7 +464,10 @@ module yelmo_defs
         real(prec), allocatable :: regions(:,:) 
         real(prec), allocatable :: region_mask(:,:) 
 
-        logical,    allocatable :: ice_allowed(:,:)     ! Locations where ice thickness can be greater than zero 
+        logical,    allocatable :: ice_allowed(:,:)     ! Locations where ice thickness can be greater than zero
+        logical,    allocatable :: ice_eais(:,:)        ! Location of ice only EAIS
+        logical,    allocatable :: ice_wais(:,:)        ! Location of ice only WAIS
+        logical,    allocatable :: ice_apis(:,:)        ! Location of ice only APIS 
         logical,    allocatable :: calv_mask(:,:)       ! for calv_method="kill-loc", where calv_mask==False, calv.
         real(prec), allocatable :: H_ice_ref(:,:)       ! Reference ice thickness, may be used for relaxation routines
 !mmr
@@ -538,6 +541,7 @@ module yelmo_defs
 
         ! ===== Floating ice variables =====
         real(prec) :: H_ice_f, V_ice_f, A_ice_f, uxy_bar_f, uxy_s_f, uxy_b_f, z_sl, bmb_shlf, T_shlf
+
         
     end type
 

@@ -9,7 +9,8 @@ module yelmo_regions
     private
     public :: calc_yregions
     public :: write_yreg_init
-    public :: write_yreg_step 
+    public :: write_yreg_step
+    public :: calc_write_yreg_step 
 
 contains
 
@@ -63,9 +64,9 @@ contains
         allocate(mask_flt(nx,ny))
         
         ! Define masks 
-        mask_tot  = (mask .and. tpo%now%H_ice .gt. 0.0) 
-        mask_grnd = (mask .and. tpo%now%H_ice .gt. 0.0 .and. tpo%now%f_grnd .gt. 0.0)
-        mask_flt  = (mask .and. tpo%now%H_ice .gt. 0.0 .and. tpo%now%f_grnd .eq. 0.0)
+        mask_tot  = ((mask).and.(tpo%now%H_ice .gt. 0.0)) 
+        mask_grnd = ((mask).and.(tpo%now%H_ice .gt. 0.0).and.(tpo%now%f_grnd .gt. 0.0))
+        mask_flt  = ((mask).and.(tpo%now%H_ice .gt. 0.0).and.(tpo%now%f_grnd .eq. 0.0))
          
         
         npts_tot  = real(count(mask_tot),prec)
